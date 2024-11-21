@@ -6,13 +6,14 @@ export default {
     "./src/pages/**/*.{js,ts,jsx,tsx,mdx}",
     "./src/components/**/*.{js,ts,jsx,tsx,mdx}",
     "./src/app/**/*.{js,ts,jsx,tsx,mdx}",
+	'./node_modules/@shadcn/ui/**/*.{js,ts,jsx,tsx}',
   ],
   theme: {
   	extend: {
-  		colors: {
-  			background: 'var(--background)',
-  			foreground: 'var(--foreground)'
-  		},
+  		 colors: {
+        primary: "rgb(106,189,198)",
+        danger: "rgb(255,0,0)",
+      },
   		borderRadius: {
   			lg: 'var(--radius)',
   			md: 'calc(var(--radius) - 2px)',
@@ -20,5 +21,4 @@ export default {
   		}
   	}
   },
-  plugins: [require("tailwindcss-animate")],
 } satisfies Config;
