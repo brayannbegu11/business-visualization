@@ -1,10 +1,31 @@
+"use client"
 import { Button} from '@/components/ui/button';
 import { Label} from '@/components/ui/label';
 import { Input} from '@/components/ui/input';
 import { Card} from '@/components/ui/card';
 import Link from "next/link";
+import { useState } from 'react';
+import { useRouter } from 'next/navigation';
+import { login } from '@/services/auth.service';
 
 export default function LoginPage() {
+
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const [error, setError] = useState('');
+    // const router = useRouter()
+
+    const handleSubmit = async (e: React.FormEvent) => {
+        e.preventDefault()
+        setError('')
+        try {
+            await login({email, password})
+            console.log('Login exitoso')
+        } catch (error) {
+            console.log('handleLogin',error)
+        }
+
+    }
     return (
       <div className="flex min-h-screen">
         <div className="hidden md:flex w-1/2 bg-cover bg-center" 
@@ -23,13 +44,15 @@ export default function LoginPage() {
               Iniciar Sesión
             </h2>
             
-            <form className="space-y-5">
+            <form className="space-y-5" onSubmit={handleSubmit}>
               <div>
                 <Label htmlFor="email">Correo Electrónico</Label>
                 <Input 
                   type="email" 
                   id="email" 
                   placeholder="Correo Electrónico" 
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value) }
                   required 
                   className="mt-2"
                 />
@@ -41,11 +64,14 @@ export default function LoginPage() {
                   type="password" 
                   id="password" 
                   placeholder="••••••••" 
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value) }
+
                   required
                   className="mt-2"
                 />
               </div>
-              
+              {error && <p className="text-red-500">{error}</p>}
               <Button
                 type="submit"
                 className="w-full mt-4 bg-primary hover:bg-opacity-80 text-white"
