@@ -14,7 +14,7 @@ export default function LoginPage() {
     const [error, setError] = useState('');
     // const router = useRouter()
 
-    const handleSubmit = async (e: React.FormEvent) => {
+    const handleSubmitLogin = async (e: React.FormEvent) => {
         e.preventDefault()
         setError('')
         try {
@@ -43,7 +43,7 @@ export default function LoginPage() {
               Iniciar Sesión
             </h2>
             
-            <form className="space-y-5" onSubmit={handleSubmit}>
+            <form className="space-y-5" onSubmit={handleSubmitLogin}>
               <div>
                 <Label htmlFor="email">Correo Electrónico</Label>
                 <Input 

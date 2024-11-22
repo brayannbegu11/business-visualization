@@ -19,7 +19,7 @@ export async function login(data: LoginData) {
 }
 
 export async function signup(data: SignupData) {
-  const response = await axios.post("/auth/signup", data);
+  const response = await axios.post("/auth/register", data);
   return response.data;
 }
 
