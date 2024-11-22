@@ -1,21 +1,32 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import Sidebar from "@/components/Sidebar";
 import Topbar from "@/components/Topbar";
 import ProtectedRoute from "@/components/auth/ProtectedRoute";
+import { Business } from "@/utils/interfaces";
+import { getBusinesses } from "@/services/business.service";
+import CreateBusinessModal from "@/components/CreateBusiness";
 
 export default function Home() {
-  const [businesses, setBusinesses] = useState([
-    { id: 1, name: "Rosales", phone: "3001234567", location: "Calle 123 #45-67" },
-    { id: 2, name: "La Polaka", phone: "3007654321", location: "Avenida 68 #45-90" },
-  ]);
+  const [businesses, setBusinesses] = useState<Business[]>([]);
+  const [loading, setLoading] = useState(false)
 
-  const handleCreateBusiness = () => {
-    // Lógica para crear negocio
-    alert("Aquí iría el formulario de creación de negocio.");
-  };
+  useEffect(() => {
+    const fetchBusinesses = async() => {
+      try {
+        const data = await getBusinesses()
+        setBusinesses(data)
+        console.log(data)
+      }catch(error) {
+        console.log('Error obteniendo negocios', error)
+      }finally {
+        setLoading(false)
+      }
+    }
+    fetchBusinesses()
+  }, [])
 
   const handleEnterBusiness = (id) => {
     // Función para ingresar al negocio
@@ -35,17 +46,13 @@ export default function Home() {
       {/* Main Content */}
       <div className="flex-1 flex flex-col bg-white shadow-lg rounded-l-xl">
         <Topbar />
+        {loading ? <div>Loading..</div>
+        :
 
-        {/* Body */}
         <main className="p-6 bg-white">
           <div className="flex justify-between items-center mb-6">
             <h2 className="text-2xl font-semibold text-gray-800">Lista de Negocios</h2>
-            <Button
-              onClick={handleCreateBusiness}
-              className="bg-red-500 text-white px-6 py-3 rounded-lg shadow-md hover:bg-red-600 transition duration-200"
-            >
-              Nuevo Negocio
-            </Button>
+            <CreateBusinessModal/>
           </div>
 
           {/* Table */}
@@ -63,20 +70,20 @@ export default function Home() {
                 {businesses.map((business) => (
                   <tr key={business.id} className="hover:bg-gray-100">
                     <td className="px-4 py-3">{business.name}</td>
-                    <td className="px-4 py-3">{business.phone}</td>
+                    <td className="px-4 py-3">{business.phoneNumber}</td>
                     <td className="px-4 py-3">{business.location}</td>
                     <td className="px-4 py-3 text-center">
                       <div className="flex justify-center gap-2">
                         <Button
-                          onClick={() => handleEnterBusiness(business.id)}
+                          onClick={() => console.log('Ingresar')}
                           className="bg-green-500 text-white text-sm px-4 py-2 rounded-lg hover:bg-green-600 transition duration-200"
-                        >
+                          >
                           Ingresar
                         </Button>
                         <Button
-                          onClick={() => handleDeleteBusiness(business.id)}
+                          onClick={() => console.log('Eliminar')}
                           className="bg-red-500 text-white text-sm px-4 py-2 rounded-lg hover:bg-red-600 transition duration-200"
-                        >
+                          >
                           Eliminar
                         </Button>
                       </div>
@@ -87,6 +94,8 @@ export default function Home() {
             </table>
           </div>
         </main>
+      }
+        {/* Body */}
       </div>
     </div>
     </ProtectedRoute>

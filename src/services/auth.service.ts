@@ -1,4 +1,4 @@
-import { clearAuthToken, setAuthToken } from "@/utils/auth";
+import { clearAuthToken, getAuthToken, setAuthToken } from "@/utils/auth";
 import axios from "../lib/axios";
 import {jwtDecode} from 'jwt-decode';
 
@@ -42,3 +42,20 @@ export function isTokenExpired(token: string) :boolean {
     return false
   }
 }
+
+export const getUserId = (): string | null => {
+  const token = getAuthToken();
+  if (token) {
+    try {
+      const decodedToken = jwtDecode(token);
+      if (!decodedToken.sub){
+        return null
+      }
+      return decodedToken.sub; // 'sub' es el campo con el id del usuario
+    } catch (error) {
+      console.error("Error decoding token", error);
+      return null;
+    }
+  }
+  return null;
+};
