@@ -1,3 +1,4 @@
+import { getAuthToken } from "@/utils/auth";
 import axios from "axios";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8080";
@@ -11,7 +12,7 @@ const axiosInstance = axios.create({
 
 // Agregar el token JWT automáticamente
 axiosInstance.interceptors.request.use((config) => {
-  const token = localStorage.getItem("token");
+  const token = getAuthToken()
   if (token) {
     config.headers.Authorization = `Bearer ${token}`;
   }

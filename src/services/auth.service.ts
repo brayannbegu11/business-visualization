@@ -1,3 +1,4 @@
+import { clearAuthToken, setAuthToken } from "@/utils/auth";
 import axios from "../lib/axios";
 
 interface LoginData {
@@ -14,7 +15,7 @@ interface SignupData {
 
 export async function login(data: LoginData) {
   const response = await axios.post("/auth/login", data);
-  localStorage.setItem("token", response.data.access_token);
+  setAuthToken(response.data.access_token);
   return response.data;
 }
 
@@ -24,5 +25,6 @@ export async function signup(data: SignupData) {
 }
 
 export function logout() {
-  localStorage.removeItem("token");
+  clearAuthToken();
+  window.location.href = '/auth/login'
 }

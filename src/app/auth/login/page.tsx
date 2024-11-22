@@ -6,13 +6,14 @@ import { Card} from '@/components/ui/card';
 import Link from "next/link";
 import { useState } from 'react';
 import { login } from '@/services/auth.service';
+import { useRouter } from 'next/navigation';
 
 export default function LoginPage() {
 
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
-    // const router = useRouter()
+    const router = useRouter()
 
     const handleSubmitLogin = async (e: React.FormEvent) => {
         e.preventDefault()
@@ -20,6 +21,7 @@ export default function LoginPage() {
         try {
             await login({email, password})
             console.log('Login exitoso')
+            router.push('/')
         } catch (error) {
             console.log('handleLogin',error)
         }
