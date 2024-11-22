@@ -39,8 +39,7 @@ export default function Home() {
 
     try {
       await deleteBusiness(id);
-      alert('Negocio eliminado con éxito.');
-      // Actualizar la lista de negocios
+      alert('Negocio eliminado con éxito.')
       setBusinesses((prev) => prev.filter((business) => business.id !== id));
     } catch (error) {
       console.error('Error al eliminar negocio:', error);
@@ -73,17 +72,21 @@ export default function Home() {
               <thead className="bg-gray-600 text-white rounded-md">
                 <tr>
                   <th className="px-4 py-3 text-left">Nombre</th>
-                  <th className="px-4 py-3 text-left">Teléfono</th>
+                  <th className="px-4 py-3 text-left">NIT</th>
                   <th className="px-4 py-3 text-left">Ubicación</th>
+                  <th className="px-4 py-3 text-left">Teléfono</th>
+                  <th className="px-4 py-3 text-left">Teléfono</th>
                   <th className="px-4 py-3 text-center">Acciones</th>
                 </tr>
               </thead>
               <tbody>
                 {businesses.map((business) => (
                   <tr key={business.id} className="hover:bg-gray-100">
-                    <td className="px-4 py-3">{business.name}</td>
+                    <td className="px-4 py-3">{business.name.toUpperCase()}</td>
                     <td className="px-4 py-3">{business.phone_number}</td>
-                    <td className="px-4 py-3">{business.location}</td>
+                    <td className="px-4 py-3">{business.location.toUpperCase()}</td>
+                    <td className="px-4 py-3">{business.phone_number}</td>
+                    <td className="px-4 py-3">{business.phone_number}</td>
                     <td className="px-4 py-3 text-center">
                       <div className="flex justify-center gap-2">
                         <Button

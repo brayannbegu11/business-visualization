@@ -1,15 +1,9 @@
 import { useState } from 'react';
-import {
-  Dialog,
-  DialogTrigger,
-  DialogContent,
-  DialogTitle,
-  DialogClose,
-} from '@/components/ui/dialog';
-import { Button } from '@/components/ui/button';
+import { Dialog, DialogContent, DialogTrigger, DialogClose, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from "@/components/ui/dialog";
 import { Input } from '@/components/ui/input';
+import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
-import { addNewBusiness, linkExistingBusiness } from '@/services/business.service';
+import { addNewBusiness, addUserToBusiness, linkExistingBusiness } from '@/services/business.service';
 
 export default function CreateBusinessModal() {
   const [activeTab, setActiveTab] = useState<'create' | 'link'>('create'); // Controla la opción activa
@@ -17,12 +11,13 @@ export default function CreateBusinessModal() {
   const [phoneNumber, setPhoneNumber] = useState('');
   const [location, setLocation] = useState('');
   const [businessId, setBusinessId] = useState('');
+  const [isErrorModalOpen, setIsErrorModalOpen] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
 
   // Lógica para crear un negocio nuevo
   const handleCreate = async () => {
     try {
       await addNewBusiness(name, phoneNumber, location);
-      alert('Negocio creado exitosamente!');
     } catch (error) {
       console.error('Error creando negocio:', error);
       alert('No se pudo crear el negocio.');
@@ -31,7 +26,20 @@ export default function CreateBusinessModal() {
 
   // Lógica para vincular un negocio existente
   const handleAddUser = async () => {
-    alert('Aquí añadiré un nuevo user')
+    try {
+      const response = await addUserToBusiness(businessId)
+      if(response  === 'Error ingresando el usuario al negocio') {
+        throw new Error('El negocio ya existe en este usuario')
+      }
+    } catch (error) {
+      let messageError = 'Error inesperado'
+      if (error instanceof Error){
+        messageError = error.message
+      }
+      setErrorMessage(messageError)
+      setIsErrorModalOpen(true)
+
+    }
   };
 
   return (
@@ -149,7 +157,21 @@ export default function CreateBusinessModal() {
               </Button>
             </div>
           </form>
+          
         )}
+         <Dialog open={isErrorModalOpen} onOpenChange={setIsErrorModalOpen}>
+      <DialogContent>
+        <DialogHeader>
+          <DialogTitle className='text-danger'>Error</DialogTitle>
+          <DialogDescription>
+            {errorMessage}
+          </DialogDescription>
+        </DialogHeader>
+        <DialogFooter>
+          <Button className='bg-danger' onClick={() => setIsErrorModalOpen(false)}>Cerrar</Button>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
       </DialogContent>
     </Dialog>
   );
