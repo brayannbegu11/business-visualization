@@ -4,6 +4,7 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import Sidebar from "@/components/Sidebar";
 import Topbar from "@/components/Topbar";
+import ProtectedRoute from "@/components/auth/ProtectedRoute";
 
 export default function Home() {
   const [businesses, setBusinesses] = useState([
@@ -25,6 +26,9 @@ export default function Home() {
   };
 
   return (
+    <ProtectedRoute>
+
+    
     <div className="flex h-screen bg-primary">
       <Sidebar />
 
@@ -85,5 +89,6 @@ export default function Home() {
         </main>
       </div>
     </div>
+    </ProtectedRoute>
   );
 }

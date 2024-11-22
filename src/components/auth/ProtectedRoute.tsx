@@ -1,4 +1,6 @@
 
+import { isTokenExpired, logout } from '@/services/auth.service';
+import { getAuthToken } from '@/utils/auth';
 import { useRouter } from 'next/navigation';
 import { useEffect, ReactNode } from 'react';
 
@@ -8,11 +10,12 @@ interface ProtectedRouteProps {
 
 const ProtectedRoute = ({ children }: ProtectedRouteProps) => {
   const router = useRouter();
-  const token = localStorage.getItem('access_token')
+  const token = getAuthToken()
 
   useEffect(() => {
-    if (!token) {
-      router.push('/login');
+    if (!token || isTokenExpired(token)) {
+        logout()
+      router.push('/auth/login');
     }
   }, [router, token]);
 
