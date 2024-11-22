@@ -1,6 +1,6 @@
 export interface Business {
     id: number,
     name: string,
-    phoneNumber: string,
+    phone_number: string,
     location:string
 }

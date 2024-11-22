@@ -6,7 +6,7 @@ import Sidebar from "@/components/Sidebar";
 import Topbar from "@/components/Topbar";
 import ProtectedRoute from "@/components/auth/ProtectedRoute";
 import { Business } from "@/utils/interfaces";
-import { getBusinesses } from "@/services/business.service";
+import { deleteBusiness, getBusinesses } from "@/services/business.service";
 import CreateBusinessModal from "@/components/CreateBusiness";
 
 export default function Home() {
@@ -32,8 +32,20 @@ export default function Home() {
     // Función para ingresar al negocio
   };
 
-  const handleDeleteBusiness = (id) => {
+  const handleDeleteBusiness = async (id: number) => {
     // Función para eliminar el negocio
+    const confirmDelete = confirm('¿Estás seguro de que deseas eliminar este negocio?');
+    if (!confirmDelete) return;
+
+    try {
+      await deleteBusiness(id);
+      alert('Negocio eliminado con éxito.');
+      // Actualizar la lista de negocios
+      setBusinesses((prev) => prev.filter((business) => business.id !== id));
+    } catch (error) {
+      console.error('Error al eliminar negocio:', error);
+      alert('No se pudo eliminar el negocio.');
+    }
   };
 
   return (
@@ -70,7 +82,7 @@ export default function Home() {
                 {businesses.map((business) => (
                   <tr key={business.id} className="hover:bg-gray-100">
                     <td className="px-4 py-3">{business.name}</td>
-                    <td className="px-4 py-3">{business.phoneNumber}</td>
+                    <td className="px-4 py-3">{business.phone_number}</td>
                     <td className="px-4 py-3">{business.location}</td>
                     <td className="px-4 py-3 text-center">
                       <div className="flex justify-center gap-2">
@@ -81,7 +93,7 @@ export default function Home() {
                           Ingresar
                         </Button>
                         <Button
-                          onClick={() => console.log('Eliminar')}
+                          onClick={() => handleDeleteBusiness(business.id)}
                           className="bg-red-500 text-white text-sm px-4 py-2 rounded-lg hover:bg-red-600 transition duration-200"
                           >
                           Eliminar
