@@ -7,7 +7,7 @@ export default function Sidebar({ menuItems }: { menuItems: { name: string; href
   const pathname = usePathname();
 
   return (
-    <aside className="w-64 bg-gradient-to-b from-primary text-white h-screen p-4 flex flex-col justify-between">
+    <aside className="w-64 bg-primary text-white h-screen p-4 flex flex-col justify-between">
       <div>
 
       </div>
