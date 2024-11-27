@@ -3,7 +3,7 @@ import { Dialog, DialogContent, DialogTrigger, DialogClose, DialogHeader, Dialog
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
-import { addNewBusiness, addUserToBusiness, linkExistingBusiness } from '@/services/business.service';
+import { addNewBusiness, addUserToBusiness } from '@/services/business.service';
 
 export default function CreateBusinessModal() {
   const [activeTab, setActiveTab] = useState<'create' | 'link'>('create'); // Controla la opción activa

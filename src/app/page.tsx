@@ -8,10 +8,19 @@ import ProtectedRoute from "@/components/auth/ProtectedRoute";
 import { Business } from "@/utils/interfaces";
 import { deleteBusiness, getBusinesses } from "@/services/business.service";
 import CreateBusinessModal from "@/components/CreateBusiness";
+import { HomeIcon, ChartBarIcon } from "@heroicons/react/24/solid";
+import { useRouter } from "next/navigation";
 
 export default function Home() {
   const [businesses, setBusinesses] = useState<Business[]>([]);
   const [loading, setLoading] = useState(false)
+  const router = useRouter()
+
+    const menuItems = [
+      { name: "Home", href: "/", icon: HomeIcon },
+      { name: "Dashboard", href: "/dashboard", icon: ChartBarIcon },
+    ];
+    const businesName = 'Mis negocios'
 
   useEffect(() => {
     const fetchBusinesses = async() => {
@@ -30,6 +39,7 @@ export default function Home() {
 
   const handleEnterBusiness = (id) => {
     // Función para ingresar al negocio
+    router.push(`/business/${id}/libro`)
   };
 
   const handleDeleteBusiness = async (id: number) => {
@@ -52,11 +62,11 @@ export default function Home() {
 
     
     <div className="flex h-screen bg-primary">
-      <Sidebar />
+      <Sidebar menuItems={menuItems}/>
 
       {/* Main Content */}
       <div className="flex-1 flex flex-col bg-white shadow-lg rounded-l-xl">
-        <Topbar />
+        <Topbar businessName={businesName}/>
         {loading ? <div>Loading..</div>
         :
 
@@ -90,7 +100,7 @@ export default function Home() {
                     <td className="px-4 py-3 text-center">
                       <div className="flex justify-center gap-2">
                         <Button
-                          onClick={() => console.log('Ingresar')}
+                          onClick={() => handleEnterBusiness(business.id)}
                           className="bg-green-500 text-white text-sm px-4 py-2 rounded-lg hover:bg-green-600 transition duration-200"
                           >
                           Ingresar

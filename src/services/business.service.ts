@@ -1,7 +1,6 @@
 import { getAuthToken } from "@/utils/auth"
 import axios from "../lib/axios"
 import { getUserId } from "./auth.service"
-import { isAxiosError } from "axios"
 
 export const getBusinesses = async() => {
     try {
@@ -58,7 +57,6 @@ export const addUserToBusiness = async(businessId: string) => {
     } catch (error) {
         console.log('Error ingresando el usuario al negocio', error)
         if (error instanceof Error) {
-            // Si el error es una instancia estándar de Error
             throw new Error(error.message);
           }
         throw new Error('Error al ingresar el usuario al negocio');
