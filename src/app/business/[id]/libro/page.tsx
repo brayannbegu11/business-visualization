@@ -4,7 +4,7 @@ import { TransactionForm } from "@/components/business/TransactionForm";
 import { TransactionsTable } from "@/components/business/TransactionTable";
 import { useParams } from "next/navigation";
 import { getTransactions, updateTransaction } from "@/services/transactions.service";
-import { HomeIcon, ChartBarIcon } from "@heroicons/react/24/solid";
+import { BookOpenIcon, CreditCardIcon, ChartBarIcon } from "@heroicons/react/24/solid";
 import Sidebar from "@/components/Sidebar";
 import Topbar from "@/components/Topbar";
 import ProtectedRoute from "@/components/auth/ProtectedRoute";
@@ -16,7 +16,8 @@ export default function Libro() {
     const [selectedTransaction, setSelectedTransaction] = useState(null)
 
     const menuItems = [
-      { name: "Home", href: "/", icon: HomeIcon },
+      { name: "Libro", href: `/business/${businessId}/libro`, icon: BookOpenIcon },
+      { name: "Datafono", href: `/business/${businessId}/datafono`, icon: CreditCardIcon },
       { name: "Dashboard", href: "/dashboard", icon: ChartBarIcon },
     ];
     async function fetchTransactions() {

@@ -9,7 +9,7 @@ export const addTransaction = async(values, businessId: string) => {
         const token = getAuthToken()
         const bookId = await getBookId(businessId)
         console.log('Values', values)
-        const response = await axios.post(`/transactions/${bookId}`, values,{
+        const response = await axios.post(`/bookTransactions/${bookId}`, values,{
             headers: {
                 Authorization: `Bearer ${token}`
             }
@@ -26,7 +26,7 @@ export const getTransactions = async(businessId) => {
         const token = getAuthToken()
         const bookId = await getBookId(businessId)
 
-        const dataResponse = await axios.get(`/transactions/${bookId}`, {
+        const dataResponse = await axios.get(`/bookTransactions/${bookId}`, {
             headers: {
                 Authorization: `Bearer ${token}`
             }
@@ -56,7 +56,7 @@ export const updateTransaction = async(updatedTransaction) => {
     try {
         const token = getAuthToken()
         console.log('Upodating', updatedTransaction)
-        await axios.put(`/transactions/${updatedTransaction.id.toString()}`, updatedTransaction, {
+        await axios.put(`/bookTransactions/${updatedTransaction.id.toString()}`, updatedTransaction, {
             headers:{
                 Authorization: `Bearer ${token}`
             }
